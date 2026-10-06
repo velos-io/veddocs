@@ -390,6 +390,191 @@
       font-size: 0.9rem;
     }
 
+
+    /* Accordion & Command Reference */
+    .cli-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1.5rem 0 1rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .cli-toolbar p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .cli-toolbar-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-toggle-all {
+      background: var(--bg-surface-elevated);
+      color: var(--primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .btn-toggle-all:hover {
+      border-color: var(--primary);
+      background: var(--primary-glow);
+    }
+    .global-options-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0 2rem;
+    }
+    .global-options-box h3 {
+      font-size: 1.05rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .global-options-box p {
+      margin-bottom: 0.85rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .global-options-box .options-table {
+      margin-bottom: 0;
+    }
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.25rem 0 3rem;
+    }
+    .accordion-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .accordion-item:hover, .accordion-item.open {
+      border-color: var(--border-accent);
+    }
+    .accordion-item.open {
+      background: rgba(20, 25, 38, 0.95);
+    }
+    .accordion-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      gap: 1rem;
+    }
+    .accordion-header:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .accordion-title {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .cmd-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .cmd-summary {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    .chevron-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      transition: transform 0.2s ease;
+      color: var(--text-faint);
+    }
+    .accordion-item.open .chevron-icon {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+    .accordion-content {
+      display: none;
+      padding: 0 1.25rem 1.25rem;
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(12, 15, 23, 0.5);
+    }
+    .accordion-item.open .accordion-content {
+      display: block;
+    }
+    .cmd-details {
+      padding-top: 1rem;
+    }
+    .cmd-details h4 {
+      font-size: 0.825rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-faint);
+      margin: 1.2rem 0 0.5rem;
+    }
+    .cmd-details h4:first-child {
+      margin-top: 0;
+    }
+    .cmd-details p {
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .options-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5rem 0 1rem;
+      font-size: 0.85rem;
+    }
+    .options-table th {
+      background: rgba(26, 34, 52, 0.8);
+      color: var(--text-main);
+      padding: 0.5rem 0.75rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .options-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid rgba(36, 46, 68, 0.6);
+      color: var(--text-muted);
+    }
+    .options-table tr:last-child td {
+      border-bottom: none;
+    }
+    .options-table td code {
+      font-family: 'JetBrains Mono', monospace;
+      color: #7dd3fc;
+      background: rgba(56, 189, 248, 0.08);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--border-subtle);
@@ -731,78 +916,500 @@ Stack.add("otel")</code></pre>
       <!-- CLI Reference -->
       <section id="cli-reference">
         <h2>CLI Subcommand Reference</h2>
-        <div class="table-container">
-          <table>
+        <p>The <code>ved</code> CLI provides declarative compilation, runtime lifecycle operations, and workspace automation. Click any command below to inspect its parameters, defaults, and examples.</p>
+
+        <!-- Global Options -->
+        <div class="global-options-box">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Global Options (Applicable to All Subcommands)
+          </h3>
+          <p>Global flags can be supplied before or after any subcommand (e.g. <code>ved -d examples/full up</code> or <code>ved up -d examples/full</code>).</p>
+          <table class="options-table">
             <thead>
               <tr>
-                <th>Command</th>
+                <th>Flag</th>
+                <th>Type</th>
+                <th>Default</th>
                 <th>Description</th>
-                <th>Typical Usage</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><code>compile</code></td>
-                <td>Compile specification into target runtime manifests</td>
-                <td><code>ved compile</code></td>
+                <td><code>-d, --dir &lt;DIR&gt;</code></td>
+                <td>Path</td>
+                <td><code>.</code> (current working directory)</td>
+                <td><strong>Working directory:</strong> Switches the root context before command execution. Enables executing nested project stacks (such as <code>examples/full</code>) directly from the repository root.</td>
               </tr>
               <tr>
-                <td><code>up</code></td>
-                <td>Compile and bring up stack containers</td>
-                <td><code>ved up -d</code></td>
+                <td><code>-h, --help</code></td>
+                <td>Flag</td>
+                <td>—</td>
+                <td>Print help information and parameter descriptions.</td>
               </tr>
               <tr>
-                <td><code>down</code></td>
-                <td>Stop and preserve stack containers</td>
-                <td><code>ved down</code></td>
-              </tr>
-              <tr>
-                <td><code>ps</code></td>
-                <td>View container statuses, health, and exposed ports</td>
-                <td><code>ved ps</code></td>
-              </tr>
-              <tr>
-                <td><code>reset</code></td>
-                <td>Tear down containers and wipe persistent volumes</td>
-                <td><code>ved reset --force</code></td>
-              </tr>
-              <tr>
-                <td><code>test</code></td>
-                <td>Execute smoke tests against configured health endpoints</td>
-                <td><code>ved test</code></td>
-              </tr>
-              <tr>
-                <td><code>validate</code></td>
-                <td>Validate specification syntax against JSON schema</td>
-                <td><code>ved validate</code></td>
-              </tr>
-              <tr>
-                <td><code>build</code></td>
-                <td>Build workspace modules via detected toolchains</td>
-                <td><code>ved build</code></td>
-              </tr>
-              <tr>
-                <td><code>sync</code></td>
-                <td>Rescan workspace and refresh cached module state</td>
-                <td><code>ved sync</code></td>
-              </tr>
-              <tr>
-                <td><code>init</code></td>
-                <td>Scaffold wrapper and template Vedfile</td>
-                <td><code>ved init</code></td>
-              </tr>
-              <tr>
-                <td><code>deinit</code></td>
-                <td>Remove Ved files and runtime state</td>
-                <td><code>ved deinit</code></td>
-              </tr>
-              <tr>
-                <td><code>version</code></td>
-                <td>Print compiler version information</td>
-                <td><code>ved version</code></td>
+                <td><code>-V, --version</code></td>
+                <td>Flag</td>
+                <td>—</td>
+                <td>Print version information.</td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="cli-toolbar">
+          <p><strong>Available Subcommands</strong> (13)</p>
+          <div class="cli-toolbar-actions">
+            <button class="btn-toggle-all" onclick="toggleAllAccordions(true)">Expand All</button>
+            <button class="btn-toggle-all" onclick="toggleAllAccordions(false)">Collapse All</button>
+          </div>
+        </div>
+
+        <div class="accordion">
+
+          <!-- compile -->
+          <div class="accordion-item open" id="cmd-compile">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved compile</span>
+                <span class="cmd-summary">Compile specification into target deployment manifests</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Parses the specification (Starlark <code>Vedfile</code> or declarative <code>ved.yaml</code>) and emits production-ready deployment manifests without starting containers.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-f, --file &lt;FILE&gt;</code></td><td>Path</td><td>Auto-detect</td><td>Explicit path to specification file (<code>Vedfile</code> or <code>ved.yaml</code>).</td></tr>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code>, <code>k8s</code>, <code>helm</code>, or <code>all</code>.</td></tr>
+                    <tr><td><code>-o, --output-dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td>Output directory where generated manifests are stored.</td></tr>
+                    <tr><td><code>--org &lt;ORG&gt;</code></td><td>String</td><td><code>local</code></td><td>Target organization profile for security context adjustments.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Compile local Docker Compose file
+ved compile -t compose
+
+# Compile Kubernetes manifests from a subproject
+ved -d examples/full compile -t k8s -o ./installer/k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- up -->
+          <div class="accordion-item" id="cmd-up">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved up</span>
+                <span class="cmd-summary">Start stack services with dependency ordering</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Starts all stack containers. Checks if deployment assets are outdated or missing, compiles them automatically, and orchestrates startup according to health dependencies.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-f, --file &lt;FILE&gt;</code></td><td>Path</td><td>Auto-detect</td><td>Path to specification file.</td></tr>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
+                    <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index (creates namespace <code>ns-&lt;slot&gt;</code>).</td></tr>
+                    <tr><td><code>--build</code></td><td>Flag</td><td><code>false</code></td><td>Execute toolchain builds for detected modules before startup.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Start Docker Compose stack in current folder
+ved up -t compose
+
+# Start Kubernetes stack in examples/full from root
+ved -d examples/full up -t k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- down -->
+          <div class="accordion-item" id="cmd-down">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved down</span>
+                <span class="cmd-summary">Stop running stack services</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Stops running containers or scales Kubernetes deployments to zero. Preserves volume data and state.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
+                    <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index (targets namespace <code>ns-&lt;slot&gt;</code>).</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Stop Docker Compose services
+ved down -t compose
+
+# Stop Kubernetes services in examples/full
+ved -d examples/full down -t k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ps -->
+          <div class="accordion-item" id="cmd-ps">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved ps</span>
+                <span class="cmd-summary">Display runtime status, container health, and endpoint URLs</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Displays running container status, readiness states, port mappings, and computed ingress URLs for local access.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-f, --file &lt;FILE&gt;</code></td><td>Path</td><td>Auto-detect</td><td>Path to specification file.</td></tr>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
+                    <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Inspect Compose status
+ved ps
+
+# Inspect Kubernetes deployment status in examples/full
+ved -d examples/full ps -t k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- reset -->
+          <div class="accordion-item" id="cmd-reset">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved reset</span>
+                <span class="cmd-summary">Tear down containers and wipe persistent volumes</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Destructive clean: removes containers, networks, and persistent data volumes (e.g. database storage) to reset the environment to a pristine state.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
+                    <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Reset Docker Compose stack and wipe volumes
+ved reset
+
+# Reset Kubernetes deployment
+ved -d examples/full reset -t k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- test -->
+          <div class="accordion-item" id="cmd-test">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved test</span>
+                <span class="cmd-summary">Run smoke tests and health verification</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Executes defined verification hooks or smoke test jobs against live running services. (Alias: <code>smoke-test</code>).</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
+                    <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Run in-cluster smoke test container
+ved test -t compose
+
+# Run smoke test on Kubernetes
+ved -d examples/full test -t k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- validate -->
+          <div class="accordion-item" id="cmd-validate">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved validate</span>
+                <span class="cmd-summary">Validate specification syntax against JSON schema</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Validates specification syntax and schema conformity. Catches invalid keys, bad port mappings, and missing fields before compilation.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-f, --file &lt;FILE&gt;</code></td><td>Path</td><td>Auto-detect</td><td>Path to specification file.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Validate local Vedfile
+ved validate
+
+# Validate examples/full specification from repository root
+ved -d examples/full validate</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- build -->
+          <div class="accordion-item" id="cmd-build">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved build</span>
+                <span class="cmd-summary">Build project modules using detected toolchains</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Scans the workspace for codebases (Node, Rust, Go, Python, Maven, Gradle) and runs language-native build commands.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-m, --module &lt;MODULE&gt;</code></td><td>String</td><td>All</td><td>Specific module name to build (builds all detected modules if omitted).</td></tr>
+                    <tr><td><code>[DIR]</code></td><td>Path</td><td><code>.</code></td><td>Target workspace directory to scan.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Build all modules
+ved build
+
+# Build a single module
+ved build -m api-gateway</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- sync -->
+          <div class="accordion-item" id="cmd-sync">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved sync</span>
+                <span class="cmd-summary">Rescan workspace and refresh cached module state</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Scans subdirectories for build files and Dockerfiles, updating <code>.ved/state.json</code> with discovered modules and port assignments.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>[DIR]</code></td><td>Path</td><td><code>.</code></td><td>Target project directory to scan.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Refresh cached workspace state
+ved sync</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- init -->
+          <div class="accordion-item" id="cmd-init">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved init</span>
+                <span class="cmd-summary">Scaffold wrapper and template Vedfile in project</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Initializes a project directory with the standalone <code>vew</code> wrapper, <code>.ved-version</code>, and a starter <code>Vedfile</code>.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>[DIR]</code></td><td>Path</td><td><code>.</code></td><td>Target project directory to initialize.</td></tr>
+                    <tr><td><code>--compose</code></td><td>Flag</td><td><code>false</code></td><td>Convert existing <code>docker-compose.yml</code> into a <code>Vedfile</code>.</td></tr>
+                    <tr><td><code>--from-compose &lt;FILE&gt;</code></td><td>Path</td><td>—</td><td>Specific Docker Compose file to convert.</td></tr>
+                    <tr><td><code>--project</code></td><td>Flag</td><td><code>false</code></td><td>Auto-generate services based on detected Dockerfiles.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Standard initialization
+ved init
+
+# Migrate from existing docker-compose.yml
+ved init --compose</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- deinit -->
+          <div class="accordion-item" id="cmd-deinit">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved deinit</span>
+                <span class="cmd-summary">Remove Ved files and runtime state</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Removes Ved files, wrappers, and runtime directory (<code>.ved/</code>) from the workspace.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>[DIR]</code></td><td>Path</td><td><code>.</code></td><td>Target directory to clean.</td></tr>
+                    <tr><td><code>-f, --force</code></td><td>Flag</td><td><code>false</code></td><td>Skip confirmation prompt.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code>ved deinit --force</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- config init -->
+          <div class="accordion-item" id="cmd-config">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved config init</span>
+                <span class="cmd-summary">Initialize environment configuration files</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Generates default environment configuration files: <code>config/.env</code> and <code>config/.local.env</code>.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>-f, --force</code></td><td>Flag</td><td><code>false</code></td><td>Force overwrite of existing configuration files.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code>ved config init</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- version -->
+          <div class="accordion-item" id="cmd-version">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved version</span>
+                <span class="cmd-summary">Print compiler version and build information</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Displays the current version of the native Ved compiler.</p>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code>ved version</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -850,6 +1457,22 @@ Stack.add("otel")</code></pre>
           button.style.borderColor = '';
           button.style.color = '';
         }, 1800);
+      });
+    }
+
+
+    function toggleAccordion(button) {
+      const item = button.closest('.accordion-item');
+      item.classList.toggle('open');
+    }
+
+    function toggleAllAccordions(open) {
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        if (open) {
+          item.classList.add('open');
+        } else {
+          item.classList.remove('open');
+        }
       });
     }
 

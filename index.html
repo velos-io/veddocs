@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ved Documentation — User Guide</title>
+  <meta name="description" content="Official user guide and documentation for Ved, the high-performance deployment compiler and orchestrator for developer environments.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0c0f17;
+      --bg-surface: #141926;
+      --bg-surface-elevated: #1a2234;
+      --bg-card: rgba(26, 34, 52, 0.7);
+      --border-subtle: #242e44;
+      --border-accent: #3a4b6e;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-faint: #64748b;
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.15);
+      --accent: #818cf8;
+      --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+      --code-bg: #090c14;
+      --code-border: #1e293b;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(12, 15, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+    .brand-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: var(--primary-glow);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--bg-surface-elevated);
+      color: var(--text-main) !important;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.85rem !important;
+    }
+    .btn-github:hover {
+      border-color: var(--primary);
+    }
+
+    /* Layout */
+    .layout-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* Sidebar */
+    aside {
+      width: 280px;
+      position: sticky;
+      top: 65px;
+      height: calc(100vh - 65px);
+      overflow-y: auto;
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+    aside .group-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+      margin-top: 1.5rem;
+    }
+    aside .group-title:first-child {
+      margin-top: 0;
+    }
+    aside ul {
+      list-style: none;
+    }
+    aside li a {
+      display: block;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+    }
+    aside li a:hover {
+      color: var(--primary);
+      background: var(--primary-glow);
+    }
+    aside li a.active {
+      color: var(--primary);
+      background: var(--primary-glow);
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 960px;
+      padding: 3rem 3rem 6rem;
+      overflow-x: hidden;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 3.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .hero h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 720px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .badge strong {
+      color: var(--text-main);
+    }
+
+    /* Content Typography */
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-top: 3.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      color: #e2e8f0;
+    }
+    p, ul, ol {
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.35rem;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    a:hover {
+      color: #7dd3fc;
+    }
+
+    /* Cards Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+    .card h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+    .card p {
+      font-size: 0.875rem;
+      margin-bottom: 0;
+    }
+
+    /* Code Blocks */
+    .code-box {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      margin: 1rem 0 1.5rem;
+      overflow: hidden;
+    }
+    .code-header {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--code-border);
+      padding: 0.45rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-faint);
+    }
+    .btn-copy {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-copy:hover {
+      color: var(--text-main);
+      border-color: var(--primary);
+    }
+    pre {
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+    }
+    p code, li code, td code {
+      background: rgba(255, 255, 255, 0.08);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    /* Callouts */
+    .callout {
+      border-left: 3px solid var(--primary);
+      background: var(--primary-glow);
+      padding: 1rem 1.25rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1.5rem 0;
+    }
+    .callout p {
+      margin: 0;
+      color: #bae6fd;
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: var(--text-faint);
+      font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      aside {
+        display: none;
+      }
+      main {
+        padding: 2rem 1.25rem 4rem;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <span class="brand-badge">VED</span>
+        <span>Docs</span>
+        <span class="brand-tag">v0.1.11</span>
+      </a>
+      <div class="nav-links">
+        <a href="#installation">Install</a>
+        <a href="#quickstart">Setup</a>
+        <a href="#specification">Vedfile</a>
+        <a href="#cli-reference">CLI</a>
+        <a href="https://github.com/velos-io/velos" class="btn-github" target="_blank" rel="noopener">
+          <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-container">
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar">
+      <div class="group-title">Getting Started</div>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#installation">Installation Options</a></li>
+        <li><a href="#quickstart">Project Setup</a></li>
+      </ul>
+
+      <div class="group-title">Specification</div>
+      <ul>
+        <li><a href="#specification">Vedfile (Starlark DSL)</a></li>
+        <li><a href="#shorthand">Shorthand YAML</a></li>
+        <li><a href="#stacks">Curated Stacks</a></li>
+      </ul>
+
+      <div class="group-title">Command Line</div>
+      <ul>
+        <li><a href="#cli-reference">Command Reference</a></li>
+        <li><a href="#vew-wrapper">The vew Wrapper</a></li>
+      </ul>
+
+      <div class="group-title">Ecosystem</div>
+      <ul>
+        <li><a href="#repositories">Repositories</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+
+      <!-- Hero Section -->
+      <section class="hero" id="overview">
+        <h1>Developer environments, <span>inverted</span>.</h1>
+        <p>Ved is a high-performance deployment compiler and orchestrator. It compiles declarative service specifications into deterministic Docker Compose and Kubernetes configurations.</p>
+        <div class="hero-badges">
+          <div class="badge">Architecture: <strong>Rust Native</strong></div>
+          <div class="badge">Spec: <strong>Vedfile (Starlark)</strong></div>
+          <div class="badge">Runtime: <strong>.ved/</strong></div>
+          <div class="badge">Wrapper: <strong>./vew</strong></div>
+        </div>
+      </section>
+
+      <!-- Installation Section -->
+      <section id="installation">
+        <h2>Installation Options</h2>
+        <p>Choose the installation path best suited for your operating system and workflow.</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <h4>1. Homebrew</h4>
+            <p>Recommended for macOS and Linux developers using the Homebrew package manager.</p>
+          </div>
+          <div class="card">
+            <h4>2. Project Wrapper (`vew`)</h4>
+            <p>Zero system dependencies. Commits directly into projects and pins compiler versions.</p>
+          </div>
+          <div class="card">
+            <h4>3. Pre-built Tarball</h4>
+            <p>Direct download of standalone binaries for CI/CD environments and Docker images.</p>
+          </div>
+          <div class="card">
+            <h4>4. Build from Source</h4>
+            <p>Compile latest development commits directly using the Rust Cargo toolchain.</p>
+          </div>
+        </div>
+
+        <h3>Option 1: Homebrew (macOS & Linux)</h3>
+        <p>Install via the official tap:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>brew tap velos-io/tap
+brew install velos-io/tap/ved</code></pre>
+        </div>
+        <p>Verify the binary is available:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>ved --version</code></pre>
+        </div>
+
+        <h3>Option 2: The `vew` Wrapper (Recommended for Repositories)</h3>
+        <p>Like <code>gradlew</code> or <code>mvnw</code>, Ved provides <code>vew</code>. When you run <code>./vew</code> in any initialized project, it resolves the pinned version in <code>.ved-version</code>, automatically downloads the correct binary to <code>.ved/bin/</code>, and executes it transparently.</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>./vew compile
+./vew up</code></pre>
+        </div>
+
+        <h3>Option 3: GitHub Releases (Direct Tarball)</h3>
+        <p>Download the pre-compiled binary matching your CPU architecture:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>macOS Apple Silicon (ARM64)</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.11/ved-darwin-arm64.tar.gz | tar -xz
+sudo mv ved /usr/local/bin/</code></pre>
+        </div>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Linux x86_64 (AMD64)</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.11/ved-linux-amd64.tar.gz | tar -xz
+sudo mv ved /usr/local/bin/</code></pre>
+        </div>
+
+        <h3>Option 4: Cargo (From Source)</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>cargo install --git https://github.com/velos-io/velos --bin ved</code></pre>
+        </div>
+      </section>
+
+      <!-- Quickstart / Project Setup -->
+      <section id="quickstart">
+        <h2>Project Setup Options</h2>
+        <p>Ved provides dedicated initialization workflows to onboard existing repositories or start new stacks in seconds.</p>
+
+        <h3>1. Initialize a Clean Project</h3>
+        <p>Scaffolds the <code>vew</code> wrapper script, pins <code>.ved-version</code>, configures <code>.ved/</code> workspace, and creates a template <code>Vedfile</code>:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>ved init</code></pre>
+        </div>
+
+        <h3>2. Migrate from Docker Compose</h3>
+        <p>Convert an existing <code>docker-compose.yml</code> file into a native, strongly typed <code>Vedfile</code>:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>ved init --compose docker-compose.yml</code></pre>
+        </div>
+        <div class="callout">
+          <p>Ved accurately preserves volumes, host port bindings, multiline health checks, environment parameters, build targets, and container network dependencies.</p>
+        </div>
+
+        <h3>3. Auto-detect Multi-module Projects</h3>
+        <p>Scans the repository tree for project build files (Maven <code>pom.xml</code>, Gradle <code>build.gradle</code>, Rust <code>Cargo.toml</code>, Go <code>go.mod</code>, Node <code>package.json</code>, Python <code>pyproject.toml</code>) and automatically builds service topologies:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>ved init --project</code></pre>
+        </div>
+
+        <h3>4. Clean Up Workspace</h3>
+        <p>Safely cleans up generated <code>.ved/</code> artifacts, wrapper scripts, and specification files:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>ved deinit
+# or force without prompt:
+ved deinit --force</code></pre>
+        </div>
+      </section>
+
+      <!-- Specification Guide -->
+      <section id="specification">
+        <h2>Specification Guide: `Vedfile`</h2>
+        <p>Ved specifications are defined in a file named <code>Vedfile</code> using Starlark — a deterministic, hermetic subset of Python developed by Google. This grants configuration files loops, conditionals, and variables without external side effects.</p>
+
+        <h3>Example `Vedfile`</h3>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Vedfile</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>"""Production service specification."""
+from ved import Service, Port, Mount, Health
+
+backend = Service(
+    name="order-api",
+    image="ghcr.io/acme/order-api:v2.4.0",
+    ports=[Port(8080, host=8080)],
+    env={
+        "PORT": "8080",
+        "DATABASE_URL": "postgres://app:secret@db:5432/orders",
+    },
+    mounts=[
+        Mount.volume("order-data", "/var/lib/orders"),
+    ],
+    wait_for=["db"],
+    health=Health(
+        http_get="http://localhost:8080/health",
+        interval=5,
+        timeout=3,
+        retries=5,
+    ),
+)
+
+database = Service(
+    name="db",
+    image="postgres:16-alpine",
+    ports=[Port(5432, host=5432)],
+    env={
+        "POSTGRES_USER": "app",
+        "POSTGRES_PASSWORD": "secret",
+        "POSTGRES_DB": "orders",
+    },
+)
+
+services = [backend, database]</code></pre>
+        </div>
+      </section>
+
+      <!-- Shorthand Section -->
+      <section id="shorthand">
+        <h2>Shorthand Specification (`ved.yaml`)</h2>
+        <p>Ved also natively parses declarative YAML specifications named <code>ved.yaml</code> or <code>.ved</code> for straightforward setups:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>ved.yaml</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>version: "1.0"
+services:
+  database:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    env:
+      POSTGRES_PASSWORD: secret
+
+  web:
+    image: nginx:alpine
+    ports:
+      - "80:8080"
+    depends_on:
+      - database</code></pre>
+        </div>
+      </section>
+
+      <!-- Curated Stacks -->
+      <section id="stacks">
+        <h2>Curated Stacks Catalog</h2>
+        <p>Import battle-tested infrastructure bundles directly into your <code>Vedfile</code>:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Vedfile</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>from ved import Stack
+
+# Add full OpenTelemetry stack: Jaeger, Prometheus, Collector, Grafana
+Stack.add("otel")</code></pre>
+        </div>
+        <p>The <code>otel</code> stack automatically provisions and connects:</p>
+        <ul>
+          <li><strong>Jaeger</strong> — Tracing UI on port <code>16686</code></li>
+          <li><strong>Prometheus</strong> — Metrics engine on port <code>9090</code></li>
+          <li><strong>OTel Collector</strong> — Telemetry pipeline on ports <code>4317</code> (gRPC) &amp; <code>4318</code> (HTTP)</li>
+          <li><strong>Grafana</strong> — Dashboard UI on port <code>3000</code> with anonymous access</li>
+        </ul>
+      </section>
+
+      <!-- CLI Reference -->
+      <section id="cli-reference">
+        <h2>CLI Subcommand Reference</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>Description</th>
+                <th>Typical Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>compile</code></td>
+                <td>Compile specification into target runtime manifests</td>
+                <td><code>ved compile</code></td>
+              </tr>
+              <tr>
+                <td><code>up</code></td>
+                <td>Compile and bring up stack containers</td>
+                <td><code>ved up -d</code></td>
+              </tr>
+              <tr>
+                <td><code>down</code></td>
+                <td>Stop and preserve stack containers</td>
+                <td><code>ved down</code></td>
+              </tr>
+              <tr>
+                <td><code>ps</code></td>
+                <td>View container statuses, health, and exposed ports</td>
+                <td><code>ved ps</code></td>
+              </tr>
+              <tr>
+                <td><code>reset</code></td>
+                <td>Tear down containers and wipe persistent volumes</td>
+                <td><code>ved reset --force</code></td>
+              </tr>
+              <tr>
+                <td><code>test</code></td>
+                <td>Execute smoke tests against configured health endpoints</td>
+                <td><code>ved test</code></td>
+              </tr>
+              <tr>
+                <td><code>validate</code></td>
+                <td>Validate specification syntax against JSON schema</td>
+                <td><code>ved validate</code></td>
+              </tr>
+              <tr>
+                <td><code>build</code></td>
+                <td>Build workspace modules via detected toolchains</td>
+                <td><code>ved build</code></td>
+              </tr>
+              <tr>
+                <td><code>sync</code></td>
+                <td>Rescan workspace and refresh cached module state</td>
+                <td><code>ved sync</code></td>
+              </tr>
+              <tr>
+                <td><code>init</code></td>
+                <td>Scaffold wrapper and template Vedfile</td>
+                <td><code>ved init</code></td>
+              </tr>
+              <tr>
+                <td><code>deinit</code></td>
+                <td>Remove Ved files and runtime state</td>
+                <td><code>ved deinit</code></td>
+              </tr>
+              <tr>
+                <td><code>version</code></td>
+                <td>Print compiler version information</td>
+                <td><code>ved version</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Repositories Section -->
+      <section id="repositories">
+        <h2>Ecosystem Repositories</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/velos">velos-io/velos</a></h4>
+            <p>Main codebase containing the Rust compiler, Starlark runtime, and CLI binary.</p>
+          </div>
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/veddocs">velos-io/veddocs</a></h4>
+            <p>Documentation website source code published on GitHub Pages.</p>
+          </div>
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/homebrew-tap">velos-io/homebrew-tap</a></h4>
+            <p>Official Homebrew formula tap and binary release tarballs.</p>
+          </div>
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/stacks">velos-io/stacks</a></h4>
+            <p>Curated service catalog containing standard bundles like OpenTelemetry.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Velos Open Source. Released under the Apache-2.0 License.</p>
+  </footer>
+
+  <script>
+    function copySnippet(button) {
+      const pre = button.parentElement.nextElementSibling;
+      const code = pre.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        button.style.borderColor = '#38bdf8';
+        button.style.color = '#38bdf8';
+        setTimeout(() => {
+          button.innerText = originalText;
+          button.style.borderColor = '';
+          button.style.color = '';
+        }, 1800);
+      });
+    }
+
+    // Scroll spy for sidebar links
+    window.addEventListener('DOMContentLoaded', () => {
+      const links = document.querySelectorAll('aside li a');
+      const sections = Array.from(links).map(link => {
+        const id = link.getAttribute('href').replace('#', '');
+        return document.getElementById(id);
+      }).filter(Boolean);
+
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 120;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        links.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

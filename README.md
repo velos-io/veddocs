@@ -55,10 +55,10 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 ./vew up
 ```
 
-Pin or update versions using `.ved-version`:
+Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.1.13" > .ved-version
+echo "0.1.15" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -100,8 +100,8 @@ Generated structure:
 my-project/
 ├── .ved/
 │   ├── .gitignore
+│   ├── .ved-version
 │   └── docker-compose.yml  # generated on compile
-├── .ved-version
 ├── vew
 └── Vedfile
 ```
@@ -111,7 +111,11 @@ my-project/
 Translate an existing `docker-compose.yml` into a native `Vedfile`:
 
 ```bash
-ved init --compose docker-compose.yml
+# Auto-discover docker-compose.yml in project
+ved init --compose
+
+# Or specify a custom compose file path
+ved init --from-compose docker-compose.yml
 ```
 
 Ved parses services, build contexts, ports, volumes, health checks, and dependencies into Starlark DSL.

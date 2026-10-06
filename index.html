@@ -712,7 +712,7 @@ brew install velos-io/tap/ved</code></pre>
         </div>
 
         <h3>Option 2: The `vew` Wrapper (Recommended for Repositories)</h3>
-        <p>Like <code>gradlew</code> or <code>mvnw</code>, Ved provides <code>vew</code>. When you run <code>./vew</code> in any initialized project, it resolves the pinned version in <code>.ved-version</code>, automatically downloads the correct binary to <code>.ved/bin/</code>, and executes it transparently.</p>
+        <p>Like <code>gradlew</code> or <code>mvnw</code>, Ved provides <code>vew</code>. When you run <code>./vew</code> in any initialized project, it resolves the pinned version in <code>.ved/.ved-version</code>, automatically downloads the correct binary to <code>.ved/bin/</code>, and executes it transparently.</p>
         <div class="code-box">
           <div class="code-header">
             <span>Terminal</span>
@@ -757,7 +757,7 @@ sudo mv ved /usr/local/bin/</code></pre>
         <p>Ved provides dedicated initialization workflows to onboard existing repositories or start new stacks in seconds.</p>
 
         <h3>1. Initialize a Clean Project</h3>
-        <p>Scaffolds the <code>vew</code> wrapper script, pins <code>.ved-version</code>, configures <code>.ved/</code> workspace, and creates a template <code>Vedfile</code>:</p>
+        <p>Scaffolds the <code>vew</code> wrapper script, pins <code>.ved/.ved-version</code>, configures <code>.ved/</code> workspace, and creates a template <code>Vedfile</code>:</p>
         <div class="code-box">
           <div class="code-header">
             <span>Terminal</span>
@@ -773,7 +773,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Terminal</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>ved init --compose docker-compose.yml</code></pre>
+          <pre><code>ved init --compose</code></pre>
         </div>
         <div class="callout">
           <p>Ved accurately preserves volumes, host port bindings, multiline health checks, environment parameters, build targets, and container network dependencies.</p>
@@ -1302,14 +1302,14 @@ ved sync</code></pre>
             </button>
             <div class="accordion-content">
               <div class="cmd-details">
-                <p>Initializes a project directory with the standalone <code>vew</code> wrapper, <code>.ved-version</code>, and a starter <code>Vedfile</code>.</p>
+                <p>Initializes a project directory with the standalone <code>vew</code> wrapper, <code>.ved/.ved-version</code>, and a starter <code>Vedfile</code>.</p>
                 <h4>Options &amp; Flags</h4>
                 <table class="options-table">
                   <thead>
                     <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td><code>[DIR]</code></td><td>Path</td><td><code>.</code></td><td>Target project directory to initialize.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td>Target project directory to initialize.</td></tr>
                     <tr><td><code>--compose</code></td><td>Flag</td><td><code>false</code></td><td>Convert existing <code>docker-compose.yml</code> into a <code>Vedfile</code>.</td></tr>
                     <tr><td><code>--from-compose &lt;FILE&gt;</code></td><td>Path</td><td>—</td><td>Specific Docker Compose file to convert.</td></tr>
                     <tr><td><code>--project</code></td><td>Flag</td><td><code>false</code></td><td>Auto-generate services based on detected Dockerfiles.</td></tr>
@@ -1322,7 +1322,13 @@ ved sync</code></pre>
 ved init
 
 # Migrate from existing docker-compose.yml
-ved init --compose</code></pre>
+ved init --compose
+
+# Migrate from specific compose file
+ved init --from-compose docker-compose.local.yml
+
+# Scaffold from detected project modules
+ved init --project</code></pre>
                 </div>
               </div>
             </div>

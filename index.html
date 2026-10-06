@@ -421,7 +421,7 @@
       <a href="#" class="brand">
         <span class="brand-badge">VED</span>
         <span>Docs</span>
-        <span class="brand-tag">v0.1.11</span>
+        <span class="brand-tag">v0.1.13</span>
       </a>
       <div class="nav-links">
         <a href="#installation">Install</a>
@@ -544,7 +544,7 @@ brew install velos-io/tap/ved</code></pre>
             <span>macOS Apple Silicon (ARM64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.11/ved-darwin-arm64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.13/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
         <div class="code-box">
@@ -552,7 +552,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Linux x86_64 (AMD64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.11/ved-linux-amd64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.13/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
 
@@ -604,7 +604,19 @@ sudo mv ved /usr/local/bin/</code></pre>
           <pre><code>ved init --project</code></pre>
         </div>
 
-        <h3>4. Clean Up Workspace</h3>
+        <h3>4. Deployment Target Configuration</h3>
+        <p>Ved cascades configuration from shell variables, <code>config/.local.env</code>, and <code>config/.env</code>. Set <code>DEPLOYMENT_TARGET=k8s</code> to automatically route operations to Kubernetes:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>config/.env</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code># Target: compose (default) or k8s
+DEPLOYMENT_TARGET=k8s</code></pre>
+        </div>
+        <p>When set to <code>k8s</code>, all commands (<code>ved up</code>, <code>ved down</code>, <code>ved ps</code>, <code>ved reset</code>, and <code>ved test</code>) operate against Kubernetes manifests and kubectl without requiring explicit flags.</p>
+
+        <h3>5. Clean Up Workspace</h3>
         <p>Safely cleans up generated <code>.ved/</code> artifacts, wrapper scripts, and specification files:</p>
         <div class="code-box">
           <div class="code-header">

@@ -58,7 +58,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved-version`:
 
 ```bash
-echo "0.1.11" > .ved-version
+echo "0.1.13" > .ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -67,11 +67,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.11/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.13/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.11/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.1.13/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -123,6 +123,17 @@ Automatically scan your repository to detect modules (Maven, Gradle, Cargo, Go, 
 ```bash
 ved init --project
 ```
+
+### Deployment Target Configuration
+
+Ved reads `DEPLOYMENT_TARGET` from `config/.local.env` and `config/.env` (default: `compose`). Set it to `k8s` to automatically route workflows to Kubernetes:
+
+```bash
+# config/.env
+DEPLOYMENT_TARGET=k8s
+```
+
+When set to `k8s`, commands (`ved compile`, `ved up`, `ved down`, `ved ps`, `ved reset`, `ved test`) orchestrate Kubernetes manifests in `installer/k8s/` without requiring `--target k8s`.
 
 ### Clean Up / Teardown
 

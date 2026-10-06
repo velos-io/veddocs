@@ -63,7 +63,7 @@ echo "0.1.11" > .ved-version
 
 ### 3. Pre-built Binaries
 
-Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-io/velos/releases):
+Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-io/ved/releases):
 
 ```bash
 # macOS ARM64 (Apple Silicon)
@@ -80,7 +80,7 @@ sudo mv ved /usr/local/bin/
 Install using the Rust toolchain:
 
 ```bash
-cargo install --git https://github.com/velos-io/velos --bin ved
+cargo install --git https://github.com/velos-io/ved --bin ved
 ```
 
 ---
@@ -254,7 +254,7 @@ Options:
 
 ## Repository
 
-- Compiler & Orchestrator: [github.com/velos-io/velos](https://github.com/velos-io/velos)
+- Compiler & Orchestrator: [github.com/velos-io/ved](https://github.com/velos-io/ved)
 - Documentation Source: [github.com/velos-io/veddocs](https://github.com/velos-io/veddocs)
 - Homebrew Tap: [github.com/velos-io/homebrew-tap](https://github.com/velos-io/homebrew-tap)
 - Stacks Catalog: [github.com/velos-io/stacks](https://github.com/velos-io/stacks)

@@ -22,6 +22,7 @@ Published documentation: [https://velos-io.github.io/veddocs](https://velos-io.g
 - [Specification Guide (`Vedfile`)](#specification-guide-vedfile)
   - [Starlark DSL](#starlark-dsl-vedfile)
   - [Shorthand Syntax](#shorthand-syntax)
+  - [Dependency Conditions (`wait_for`)](#dependency-conditions-wait_for)
   - [Curated Stacks](#curated-stacks)
 - [CLI Reference](#cli-reference)
   - [Commands Overview](#commands-overview)
@@ -58,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.1.15" > .ved/.ved-version
+echo "0.2.2" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -195,6 +196,17 @@ db = Service(
 services = [app, db]
 ```
 
+### Dependency Conditions (`wait_for`)
+
+Services can declare startup dependencies using `wait_for`. Ved supports both dot (`service.condition`) and colon (`service:condition`) syntax:
+
+| Syntax | Condition | Behavior |
+|:---|:---|:---|
+| `["db"]` or `["db.healthy"]` | `healthy` (default) | Waits for service health check to pass. If no health check is defined, falls back to `started`. |
+| `["db.started"]` | `started` | Waits for container to start. |
+| `["flyway.completed"]` or `["flyway.success"]` | `completed` / `success` | Waits for container to exit successfully with code 0 (`service_completed_successfully` in Compose). Ideal for database migrations and one-off seed tasks. |
+| `["db:5432"]` or `["ext:5432"]` | TCP probe | Probes the TCP port until it accepts connections before starting the service. |
+
 ### Shorthand Syntax
 
 For concise declarations, use `ved.yaml` or `.ved`:
@@ -255,14 +267,18 @@ The `otel` stack automatically provisions:
 | `ved config` | Inspect and manage configuration files |
 | `ved version` | Display compiler version |
 
-### Options
+### Global Options
+
+These options apply across all subcommands:
 
 ```text
 Options:
-  -f, --file <FILE>   Path to Vedfile or spec [default: Vedfile]
-  -v, --verbose       Enable verbose log output
-  -h, --help          Print help
-  -V, --version       Print version
+  -d, --dir <DIR>         Working directory for command execution [default: .]
+      --config-dir <DIR>  Configuration directory [default: {root}/config] [env: VED_CONFIG_DIR=]
+      --work-dir <DIR>    Mutable runtime state directory [default: {root}/.ved] [env: VED_WORK_DIR=]
+  -o, --output-dir <DIR>  Unified artifact directory [default: legacy layout] [env: VED_OUTPUT_DIR=]
+  -h, --help              Print help
+  -V, --version           Print version
 ```
 
 ---

@@ -637,6 +637,7 @@
       <div class="group-title">Specification</div>
       <ul>
         <li><a href="#specification">Vedfile (Starlark DSL)</a></li>
+        <li><a href="#dependencies">Dependency Conditions</a></li>
         <li><a href="#shorthand">Shorthand YAML</a></li>
         <li><a href="#stacks">Curated Stacks</a></li>
       </ul>
@@ -863,6 +864,43 @@ services = [backend, database]</code></pre>
         </div>
       </section>
 
+      <!-- Dependency Conditions Section -->
+      <section id="dependencies">
+        <h2>Dependency Conditions (<code>wait_for</code>)</h2>
+        <p>Services can declare startup dependencies using <code>wait_for</code> in Starlark or <code>depends_on</code> in YAML shorthand. Ved supports both dot (<code>service.condition</code>) and colon (<code>service:condition</code>) syntax:</p>
+        <table class="options-table">
+          <thead>
+            <tr>
+              <th>Syntax</th>
+              <th>Condition</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>["db"]</code> or <code>["db.healthy"]</code></td>
+              <td><code>healthy</code> (default)</td>
+              <td>Waits for the target container to pass its health check. If no health check is defined, falls back to <code>started</code>.</td>
+            </tr>
+            <tr>
+              <td><code>["db.started"]</code></td>
+              <td><code>started</code></td>
+              <td>Waits for the target container to start running without waiting for health probes.</td>
+            </tr>
+            <tr>
+              <td><code>["flyway.completed"]</code> or <code>["flyway.success"]</code></td>
+              <td><code>completed</code> / <code>success</code></td>
+              <td>Waits for the target container to exit cleanly with status code 0 (<code>service_completed_successfully</code> in Docker Compose). Ideal for database migrations and one-off initialization tasks.</td>
+            </tr>
+            <tr>
+              <td><code>["db:5432"]</code> or <code>["ext:5432"]</code></td>
+              <td>TCP probe</td>
+              <td>Probes the target TCP port until the socket accepts incoming connections before starting downstream services.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
       <!-- Shorthand Section -->
       <section id="shorthand">
         <h2>Shorthand Specification (`ved.yaml`)</h2>
@@ -940,6 +978,24 @@ Stack.add("otel")</code></pre>
                 <td>Path</td>
                 <td><code>.</code> (current working directory)</td>
                 <td><strong>Working directory:</strong> Switches the root context before command execution. Enables executing nested project stacks (such as <code>examples/full</code>) directly from the repository root.</td>
+              </tr>
+              <tr>
+                <td><code>--config-dir &lt;DIR&gt;</code></td>
+                <td>Path</td>
+                <td><code>{root}/config</code></td>
+                <td><strong>Configuration directory:</strong> Directory containing project configuration files (<code>.env</code>, <code>.local.env</code>). Can also be set via <code>VED_CONFIG_DIR</code>.</td>
+              </tr>
+              <tr>
+                <td><code>--work-dir &lt;DIR&gt;</code></td>
+                <td>Path</td>
+                <td><code>{root}/.ved</code></td>
+                <td><strong>Runtime state directory:</strong> Mutable working directory for cache, runtime state, and local artifacts. Can also be set via <code>VED_WORK_DIR</code>.</td>
+              </tr>
+              <tr>
+                <td><code>-o, --output-dir &lt;DIR&gt;</code></td>
+                <td>Path</td>
+                <td>Legacy layout</td>
+                <td><strong>Unified artifact directory:</strong> Destination directory where compiled manifests (Compose, Kubernetes) are written. Can also be set via <code>VED_OUTPUT_DIR</code>.</td>
               </tr>
               <tr>
                 <td><code>-h, --help</code></td>

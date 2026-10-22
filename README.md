@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.2" > .ved/.ved-version
+echo "0.2.3" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries

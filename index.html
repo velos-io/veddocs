@@ -829,6 +829,13 @@ ved deinit --force</code></pre>
           <pre><code>"""Production service specification."""
 from ved import Service, Port, Mount, Health
 
+app = App(
+    name="acme-app",
+    version="1.0.0",
+    config_dir="config", # or custom directory, defaults to "." if omitted
+    env_files=[".env", ".local.env"], # resolves relative to config_dir
+)
+
 backend = Service(
     name="order-api",
     image="ghcr.io/acme/order-api:v2.4.0",
@@ -980,10 +987,10 @@ Stack.add("otel")</code></pre>
                 <td><strong>Working directory:</strong> Switches the root context before command execution. Enables executing nested project stacks (such as <code>examples/full</code>) directly from the repository root.</td>
               </tr>
               <tr>
-                <td><code>--config-dir &lt;DIR&gt;</code></td>
+                <td><code>--config-dir &lt;DIR&gt;</code><br><span style="font-size: 0.8em; color: var(--text-muted);">(alias: <code>--config_dir</code>)</span></td>
                 <td>Path</td>
                 <td><code>{root}/config</code> (fallback: <code>../config</code>)</td>
-                <td><strong>Configuration directory:</strong> Directory containing project configuration files (<code>.env</code>, <code>.local.env</code>). If omitted and <code>{root}/config</code> is absent, Ved automatically falls back to <code>../config</code> if present. Can also be set via <code>VED_CONFIG_DIR</code>.</td>
+                <td><strong>Configuration directory:</strong> Directory containing project configuration files (<code>.env</code>, <code>.local.env</code>). Overrides <code>App(..., config_dir=...)</code> when passed directly. If omitted and <code>{root}/config</code> is absent, Ved automatically falls back to <code>../config</code> if present. Can also be set via <code>VED_CONFIG_DIR</code>.</td>
               </tr>
               <tr>
                 <td><code>--work-dir &lt;DIR&gt;</code></td>

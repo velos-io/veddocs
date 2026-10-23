@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.4" > .ved/.ved-version
+echo "0.2.5" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -131,11 +131,23 @@ ved init --project
 
 ### Configuration Directory Resolution
 
-Ved loads project settings from `config/.env` and `config/.local.env`. The configuration directory is resolved in the following priority order:
-1. `--config-dir <DIR>` CLI flag
+Ved supports declaring the configuration directory via the `config_dir` attribute in `App(...)` or `ved.yaml`. If not set, it defaults to `.` (with `{root}/config` fallback for legacy setups). Relative paths in `env_files` resolve against `config_dir`:
+
+```python
+app = App(
+    name="my-app",
+    version="0.1.0",
+    config_dir="config", # or custom directory like "my-config", "."
+    env_files=[".env", ".local.env"] # automatically resolves to config/.env, config/.local.env
+)
+```
+
+The configuration directory is resolved in the following priority order:
+1. `--config-dir <DIR>` (or `--config_dir <DIR>`) CLI flag (overrides `app.config_dir`)
 2. `VED_CONFIG_DIR` environment variable
-3. Project directory: `{root}/config`
-4. Parent workspace fallback: `{root}/../config` (automatically used when running nested subprojects if `{root}/config` is absent)
+3. Specification attribute: `app.config_dir` in `Vedfile` or `config_dir` in `ved.yaml`
+4. Project directory: `{root}/config`
+5. Parent workspace fallback: `{root}/../config` (automatically used when running nested subprojects if `{root}/config` is absent)
 
 ### Deployment Target Configuration
 
@@ -282,7 +294,7 @@ These options apply across all subcommands:
 ```text
 Options:
   -d, --dir <DIR>         Working directory for command execution [default: .]
-      --config-dir <DIR>  Configuration directory [default: {root}/config, fallback: ../config] [env: VED_CONFIG_DIR=]
+      --config-dir, --config_dir <DIR>  Configuration directory [default: {root}/config, fallback: ../config] [env: VED_CONFIG_DIR=]
       --work-dir <DIR>    Mutable runtime state directory [default: {root}/.ved] [env: VED_WORK_DIR=]
   -o, --output-dir <DIR>  Unified artifact directory [default: legacy layout] [env: VED_OUTPUT_DIR=]
   -h, --help              Print help

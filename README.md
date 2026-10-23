@@ -129,6 +129,14 @@ Automatically scan your repository to detect modules (Maven, Gradle, Cargo, Go, 
 ved init --project
 ```
 
+### Configuration Directory Resolution
+
+Ved loads project settings from `config/.env` and `config/.local.env`. The configuration directory is resolved in the following priority order:
+1. `--config-dir <DIR>` CLI flag
+2. `VED_CONFIG_DIR` environment variable
+3. Project directory: `{root}/config`
+4. Parent workspace fallback: `{root}/../config` (automatically used when running nested subprojects if `{root}/config` is absent)
+
 ### Deployment Target Configuration
 
 Ved reads `DEPLOYMENT_TARGET` from `config/.local.env` and `config/.env` (default: `compose`). Set it to `k8s` to automatically route workflows to Kubernetes:
@@ -274,7 +282,7 @@ These options apply across all subcommands:
 ```text
 Options:
   -d, --dir <DIR>         Working directory for command execution [default: .]
-      --config-dir <DIR>  Configuration directory [default: {root}/config] [env: VED_CONFIG_DIR=]
+      --config-dir <DIR>  Configuration directory [default: {root}/config, fallback: ../config] [env: VED_CONFIG_DIR=]
       --work-dir <DIR>    Mutable runtime state directory [default: {root}/.ved] [env: VED_WORK_DIR=]
   -o, --output-dir <DIR>  Unified artifact directory [default: legacy layout] [env: VED_OUTPUT_DIR=]
   -h, --help              Print help

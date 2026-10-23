@@ -982,8 +982,8 @@ Stack.add("otel")</code></pre>
               <tr>
                 <td><code>--config-dir &lt;DIR&gt;</code></td>
                 <td>Path</td>
-                <td><code>{root}/config</code></td>
-                <td><strong>Configuration directory:</strong> Directory containing project configuration files (<code>.env</code>, <code>.local.env</code>). Can also be set via <code>VED_CONFIG_DIR</code>.</td>
+                <td><code>{root}/config</code> (fallback: <code>../config</code>)</td>
+                <td><strong>Configuration directory:</strong> Directory containing project configuration files (<code>.env</code>, <code>.local.env</code>). If omitted and <code>{root}/config</code> is absent, Ved automatically falls back to <code>../config</code> if present. Can also be set via <code>VED_CONFIG_DIR</code>.</td>
               </tr>
               <tr>
                 <td><code>--work-dir &lt;DIR&gt;</code></td>

@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.6" > .ved/.ved-version
+echo "0.2.7" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -68,11 +68,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.6/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.6/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -215,6 +215,16 @@ db = Service(
 
 services = [app, db]
 ```
+
+
+### Health Checks (`Health`)
+
+Ved supports HTTP, TCP, and Exec probes across both Compose and Kubernetes targets:
+
+- **HTTP GET**: `Health.http_get("http://localhost:8080/health", interval=5, timeout=3, retries=5)`
+- **TCP Socket**: `Health.tcp_socket(5432)`
+- **Shell Command**: `Health.exec("redis-cli ping")` (uses `CMD-SHELL` / `sh -c`)
+- **Direct Exec (Distroless / Shell-less)**: `Health.exec(["cerbos", "healthcheck"])` (uses direct `CMD` exec form without invoking `/bin/sh`, ideal for distroless images like Cerbos)
 
 ### Dependency Conditions (`wait_for`)
 

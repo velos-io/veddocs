@@ -606,7 +606,7 @@
       <a href="#" class="brand">
         <span class="brand-badge">VED</span>
         <span>Docs</span>
-        <span class="brand-tag">v0.2.6</span>
+        <span class="brand-tag">v0.2.7</span>
       </a>
       <div class="nav-links">
         <a href="#installation">Install</a>
@@ -730,7 +730,7 @@ brew install velos-io/tap/ved</code></pre>
             <span>macOS Apple Silicon (ARM64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.6/ved-darwin-arm64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
         <div class="code-box">
@@ -738,7 +738,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Linux x86_64 (AMD64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.6/ved-linux-amd64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
 
@@ -869,6 +869,44 @@ database = Service(
 
 services = [backend, database]</code></pre>
         </div>
+      </section>
+
+
+      <!-- Health Probes Section -->
+      <section id="health-probes">
+        <h2>Health Check Probes (<code>Health</code>)</h2>
+        <p>Ved compiles health declarations into native Docker Compose <code>healthcheck</code> blocks and Kubernetes <code>readinessProbe</code> specifications:</p>
+        <table class="options-table">
+          <thead>
+            <tr>
+              <th>Probe Type</th>
+              <th>Starlark Syntax</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HTTP GET</td>
+              <td><code>Health.http_get("http://localhost:8080/health", interval=5, timeout=3, retries=5)</code></td>
+              <td>Probes HTTP endpoint until a 2xx or 3xx status returns.</td>
+            </tr>
+            <tr>
+              <td>TCP Socket</td>
+              <td><code>Health.tcp_socket(5432)</code></td>
+              <td>Tests connectivity against the specified TCP container port.</td>
+            </tr>
+            <tr>
+              <td>Shell Exec</td>
+              <td><code>Health.exec("redis-cli ping")</code></td>
+              <td>Executes command via <code>CMD-SHELL</code> in Compose and <code>sh -c</code> in Kubernetes.</td>
+            </tr>
+            <tr>
+              <td>Direct Exec</td>
+              <td><code>Health.exec(["cerbos", "healthcheck"])</code></td>
+              <td>Executes process arguments directly (<code>CMD</code> form) without requiring <code>/bin/sh</code>. Required for distroless and scratch images.</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
 
       <!-- Dependency Conditions Section -->

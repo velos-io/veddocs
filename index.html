@@ -606,7 +606,7 @@
       <a href="#" class="brand">
         <span class="brand-badge">VED</span>
         <span>Docs</span>
-        <span class="brand-tag">v0.2.7</span>
+        <span class="brand-tag">v0.2.8</span>
       </a>
       <div class="nav-links">
         <a href="#installation">Install</a>
@@ -637,6 +637,8 @@
       <div class="group-title">Specification</div>
       <ul>
         <li><a href="#specification">Vedfile (Starlark DSL)</a></li>
+        <li><a href="#entrypoint-command">Entrypoint & Command</a></li>
+        <li><a href="#health-probes">Health Probes</a></li>
         <li><a href="#dependencies">Dependency Conditions</a></li>
         <li><a href="#shorthand">Shorthand YAML</a></li>
         <li><a href="#stacks">Curated Stacks</a></li>
@@ -730,7 +732,7 @@ brew install velos-io/tap/ved</code></pre>
             <span>macOS Apple Silicon (ARM64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-darwin-arm64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
         <div class="code-box">
@@ -738,7 +740,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Linux x86_64 (AMD64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-linux-amd64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
 
@@ -871,6 +873,61 @@ services = [backend, database]</code></pre>
         </div>
       </section>
 
+
+      <!-- Entrypoint and Command Section -->
+      <section id="entrypoint-command">
+        <h2>Container Entrypoint and Command (<code>entrypoint</code>, <code>command</code>)</h2>
+        <p>Services and jobs support overriding container entrypoints and command arguments using either lists or strings:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Starlark Entrypoint and Command</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>cerbos = Service(
+    name="cerbos",
+    image="ghcr.io/cerbos/cerbos:0.39.0",
+    entrypoint=["cerbos"],
+    command=["server", "--config=/dev/null"],
+)</code></pre>
+        </div>
+        <p>Ved reconciles runtime differences between Docker Compose and Kubernetes:</p>
+        <table class="options-table">
+          <thead>
+            <tr>
+              <th>Target Runtime</th>
+              <th>Starlark Field</th>
+              <th>Emitted Manifest Field</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Docker Compose</td>
+              <td><code>entrypoint</code></td>
+              <td><code>entrypoint: [...]</code></td>
+              <td>Overrides the container image entrypoint executable.</td>
+            </tr>
+            <tr>
+              <td>Docker Compose</td>
+              <td><code>command</code></td>
+              <td><code>command: [...]</code></td>
+              <td>Supplies default arguments to the entrypoint executable.</td>
+            </tr>
+            <tr>
+              <td>Kubernetes</td>
+              <td><code>entrypoint</code></td>
+              <td><code>spec.template.spec.containers[].command</code></td>
+              <td>Maps to the container executable command array.</td>
+            </tr>
+            <tr>
+              <td>Kubernetes</td>
+              <td><code>command</code></td>
+              <td><code>spec.template.spec.containers[].args</code></td>
+              <td>Maps to container args when entrypoint is set (or directly to command when entrypoint is omitted).</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
       <!-- Health Probes Section -->
       <section id="health-probes">

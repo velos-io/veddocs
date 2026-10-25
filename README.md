@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.7" > .ved/.ved-version
+echo "0.2.8" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -68,11 +68,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.7/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -216,6 +216,24 @@ db = Service(
 services = [app, db]
 ```
 
+
+### Entrypoint and Command (`entrypoint`, `command`)
+
+Services and jobs support overriding container entrypoints and command arguments:
+
+```python
+cerbos = Service(
+    name="cerbos",
+    image="ghcr.io/cerbos/cerbos:0.39.0",
+    entrypoint=["cerbos"],
+    command=["server", "--config=/dev/null"],
+)
+```
+
+Ved reconciles runtime differences across targets:
+
+- **Docker Compose**: Emits `entrypoint` directly as container entrypoint, and `command` as default arguments.
+- **Kubernetes**: Emits `entrypoint` as container `command`, and emits `command` as container `args`. When only `command` is supplied without `entrypoint`, Ved populates `command` directly for backwards compatibility.
 
 ### Health Checks (`Health`)
 

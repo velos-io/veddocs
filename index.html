@@ -606,7 +606,7 @@
       <a href="#" class="brand">
         <span class="brand-badge">VED</span>
         <span>Docs</span>
-        <span class="brand-tag">v0.2.8</span>
+        <span class="brand-tag">v0.2.9</span>
       </a>
       <div class="nav-links">
         <a href="#installation">Install</a>
@@ -640,6 +640,7 @@
         <li><a href="#entrypoint-command">Entrypoint & Command</a></li>
         <li><a href="#health-probes">Health Probes</a></li>
         <li><a href="#dependencies">Dependency Conditions</a></li>
+        <li><a href="#resources-profiles">Resources &amp; Profiles</a></li>
         <li><a href="#shorthand">Shorthand YAML</a></li>
         <li><a href="#stacks">Curated Stacks</a></li>
       </ul>
@@ -732,7 +733,7 @@ brew install velos-io/tap/ved</code></pre>
             <span>macOS Apple Silicon (ARM64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-darwin-arm64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.9/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
         <div class="code-box">
@@ -740,7 +741,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Linux x86_64 (AMD64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-linux-amd64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.9/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
 
@@ -1028,6 +1029,34 @@ services:
     depends_on:
       - database</code></pre>
         </div>
+      </section>
+
+      <!-- Resource Limits & Profiles Section -->
+      <section id="resources-profiles">
+        <h2>Resource Limits, Ulimits &amp; Profiles</h2>
+        <p>Control memory, CPU quotas, ulimits, shared memory size, and profile memberships across Compose and Kubernetes:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Starlark Resource &amp; Profile Specification</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code>worker = Service(
+    name="worker",
+    image="ghcr.io/velos-io/worker:latest",
+    profiles=["core", "batch"],
+    shm_size="1gb",
+    deploy={
+        "resources": {
+            "limits": {"cpus": "2.0", "memory": "2G"},
+            "reservations": {"cpus": "0.5", "memory": "512M"},
+        }
+    },
+    ulimits={
+        "nofile": {"soft": 65536, "hard": 65536}
+    },
+)</code></pre>
+        </div>
+        <p><strong>Project Isolation:</strong> Ved omits <code>container_name</code> by default so Docker Compose namespaces containers under <code>COMPOSE_PROJECT_NAME</code> to prevent global name collisions across parallel pipelines. Use <code>container_name="name"</code> to supply an explicit name when required.</p>
       </section>
 
       <!-- Curated Stacks -->

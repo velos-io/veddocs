@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.8" > .ved/.ved-version
+echo "0.2.9" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -68,11 +68,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.9/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.8/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.9/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -254,6 +254,30 @@ Services can declare startup dependencies using `wait_for`. Ved supports both do
 | `["db.started"]` | `started` | Waits for container to start. |
 | `["flyway.completed"]` or `["flyway.success"]` | `completed` / `success` | Waits for container to exit successfully with code 0 (`service_completed_successfully` in Compose). Ideal for database migrations and one-off seed tasks. |
 | `["db:5432"]` or `["ext:5432"]` | TCP probe | Probes the TCP port until it accepts connections before starting the service. |
+
+### Resource Limits, Ulimits, and Profiles
+
+Services and jobs support resource allocations, shared memory sizes, kernel ulimits, and multi-profile membership:
+
+```python
+worker = Service(
+    name="worker",
+    image="ghcr.io/velos-io/worker:latest",
+    profiles=["core", "batch"],
+    shm_size="1gb",
+    deploy={
+        "resources": {
+            "limits": {"cpus": "2.0", "memory": "2G"},
+            "reservations": {"cpus": "0.5", "memory": "512M"},
+        }
+    },
+    ulimits={
+        "nofile": {"soft": 65536, "hard": 65536}
+    },
+)
+```
+
+- **Project Isolation**: Ved omits `container_name` by default so Docker Compose namespaces containers under `COMPOSE_PROJECT_NAME` without name collisions across parallel projects. Set `container_name="custom-name"` only when an explicit global container name is required.
 
 ### Shorthand Syntax
 

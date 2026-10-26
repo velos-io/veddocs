@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.10" > .ved/.ved-version
+echo "0.2.11" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -68,11 +68,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.10/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.11/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.10/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.11/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -128,6 +128,10 @@ Automatically scan your repository to detect modules (Maven, Gradle, Cargo, Go, 
 ```bash
 ved init --project
 ```
+
+### Docker Compose env_file Resolution
+
+When compiling Docker Compose files (such as `.ved/docker-compose.yml`), Ved automatically rebases all `env_file` paths relative to the compose file directory. This complies with Docker Compose path resolution rules and ensures Compose finds referenced files without requiring extra flags.
 
 ### Configuration Directory Resolution
 

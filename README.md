@@ -153,6 +153,14 @@ The configuration directory is resolved in the following priority order:
 4. Project directory: `{root}/config`
 5. Parent workspace fallback: `{root}/../config` (automatically used when running nested subprojects if `{root}/config` is absent)
 
+### Directory Scopes and Path Resolution
+
+Ved cleanly decouples working directory (`-d`), configuration directory (`--config-dir`), and runtime state (`--work-dir`):
+- **Working directory (`--dir` / `-d`, default `.`):** Anchors the workspace root. Docker Compose receives this root via `--project-directory`; all relative paths declared within the generated Compose manifest (such as `env_file` and build contexts) anchor to this root.
+- **Configuration directory (`--config-dir`, default `{root}/config`):** Holds specification environments (`.env`, `.local.env`) and catalogs. Paths declared in specifications resolve relative to the working directory root.
+- **Work directory (`--work-dir`, default `{root}/.ved`):** Holds ephemeral runtime state, `.generated.env`, and default compiled Compose manifests (`.ved/docker-compose.yml`). The work directory location does not shift Compose path resolution.
+- **Output directory (`--output-dir` / `-o`):** Redirects final compiled deployment manifests when specified.
+
 ### Deployment Target Configuration
 
 Ved reads `DEPLOYMENT_TARGET` from `config/.local.env` and `config/.env` (default: `compose`). Set it to `k8s` to automatically route workflows to Kubernetes:

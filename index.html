@@ -1108,7 +1108,7 @@ Stack.add("otel")</code></pre>
                 <td><code>-d, --dir &lt;DIR&gt;</code></td>
                 <td>Path</td>
                 <td><code>.</code> (current working directory)</td>
-                <td><strong>Working directory:</strong> Switches the root context before command execution. Enables executing nested project stacks (such as <code>examples/full</code>) directly from the repository root.</td>
+                <td><strong>Working directory:</strong> Switches the root context before command execution. Serves as the anchor passed to Docker Compose via <code>--project-directory</code>; all relative paths inside the generated Compose manifest (such as <code>env_file</code>) resolve relative to this directory.</td>
               </tr>
               <tr>
                 <td><code>--config-dir &lt;DIR&gt;</code><br><span style="font-size: 0.8em; color: var(--text-muted);">(alias: <code>--config_dir</code>)</span></td>

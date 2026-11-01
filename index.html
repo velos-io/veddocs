@@ -606,7 +606,7 @@
       <a href="#" class="brand">
         <span class="brand-badge">VED</span>
         <span>Docs</span>
-        <span class="brand-tag">v0.2.11</span>
+        <span class="brand-tag">v0.2.18</span>
       </a>
       <div class="nav-links">
         <a href="#installation">Install</a>
@@ -733,7 +733,7 @@ brew install velos-io/tap/ved</code></pre>
             <span>macOS Apple Silicon (ARM64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.11/ved-darwin-arm64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
         <div class="code-box">
@@ -741,7 +741,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Linux x86_64 (AMD64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.11/ved-linux-amd64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
 
@@ -803,7 +803,7 @@ sudo mv ved /usr/local/bin/</code></pre>
           <pre><code># Target: compose (default) or k8s
 DEPLOYMENT_TARGET=k8s</code></pre>
         </div>
-        <p>When set to <code>k8s</code>, all commands (<code>ved up</code>, <code>ved down</code>, <code>ved ps</code>, <code>ved reset</code>, and <code>ved test</code>) operate against Kubernetes manifests and kubectl without requiring explicit flags.</p>
+        <p>When set to <code>k8s</code>, all commands (<code>ved up</code>, <code>ved down</code>, <code>ved ps</code>, <code>ved reset</code>, <code>ved test</code>, and <code>ved verify</code>) operate against Kubernetes manifests and kubectl without requiring explicit flags.</p>
 
         <h3>5. Clean Up Workspace</h3>
         <p>Safely cleans up generated <code>.ved/</code> artifacts, wrapper scripts, and specification files:</p>
@@ -1145,7 +1145,7 @@ Stack.add("otel")</code></pre>
         </div>
 
         <div class="cli-toolbar">
-          <p><strong>Available Subcommands</strong> (13)</p>
+          <p><strong>Available Subcommands</strong> (14)</p>
           <div class="cli-toolbar-actions">
             <button class="btn-toggle-all" onclick="toggleAllAccordions(true)">Expand All</button>
             <button class="btn-toggle-all" onclick="toggleAllAccordions(false)">Collapse All</button>
@@ -1357,6 +1357,7 @@ ved -d examples/full reset -t k8s</code></pre>
                     <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
                   </thead>
                   <tbody>
+                    <tr><td><code>[WORKLOAD]</code></td><td>String</td><td><code>smoke-test</code></td><td>Name of the job workload to run.</td></tr>
                     <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
                     <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index.</td></tr>
                     <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
@@ -1370,6 +1371,45 @@ ved test -t compose
 
 # Run smoke test on Kubernetes
 ved -d examples/full test -t k8s</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- verify -->
+          <div class="accordion-item" id="cmd-verify">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved verify</span>
+                <span class="cmd-summary">Run full verification lifecycle (reset &rarr; up &rarr; ps &rarr; test)</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Compiles or refreshes deployment manifests once, then executes a clean end-to-end verification sequence (<code>reset</code>, <code>up</code>, <code>ps</code>, and <code>test</code>) in a single command. Automatically selects <code>smoke-test</code> or the first enabled one-off job when no explicit workload is passed, and cleanly skips the test step when a stack defines only services.</p>
+                <h4>Options &amp; Flags</h4>
+                <table class="options-table">
+                  <thead>
+                    <tr><th>Flag</th><th>Type</th><th>Default</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>[WORKLOAD]</code></td><td>String</td><td>Auto-detect</td><td>Optional test job workload to execute (defaults to <code>smoke-test</code> or first runnable job).</td></tr>
+                    <tr><td><code>-f, --file &lt;FILE&gt;</code></td><td>Path</td><td>Auto-detect</td><td>Explicit path to specification file (<code>Vedfile</code> or <code>ved.yaml</code>).</td></tr>
+                    <tr><td><code>-t, --target &lt;TARGET&gt;</code></td><td>String</td><td><code>compose</code></td><td>Target runtime: <code>compose</code> or <code>k8s</code>.</td></tr>
+                    <tr><td><code>-s, --slot &lt;SLOT&gt;</code></td><td>String</td><td><code>1</code></td><td>Kubernetes slot index (targets namespace <code>ns-&lt;slot&gt;</code>).</td></tr>
+                    <tr><td><code>--build</code></td><td>Flag</td><td><code>false</code></td><td>Execute toolchain builds for detected modules before verification.</td></tr>
+                    <tr><td><code>-d, --dir &lt;DIR&gt;</code></td><td>Path</td><td><code>.</code></td><td><em>Global:</em> Change working directory before execution.</td></tr>
+                  </tbody>
+                </table>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Run full end-to-end verification on Docker Compose
+ved verify
+
+# Run full end-to-end verification on Kubernetes
+ved -d examples/postgres-flyway verify -t k8s</code></pre>
                 </div>
               </div>
             </div>

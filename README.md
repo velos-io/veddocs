@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.11" > .ved/.ved-version
+echo "0.2.18" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -68,11 +68,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.11/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.11/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -170,7 +170,7 @@ Ved reads `DEPLOYMENT_TARGET` from `config/.local.env` and `config/.env` (defaul
 DEPLOYMENT_TARGET=k8s
 ```
 
-When set to `k8s`, commands (`ved compile`, `ved up`, `ved down`, `ved ps`, `ved reset`, `ved test`) orchestrate Kubernetes manifests in `installer/k8s/` without requiring `--target k8s`.
+When set to `k8s`, commands (`ved compile`, `ved up`, `ved down`, `ved ps`, `ved reset`, `ved test`, `ved verify`) orchestrate Kubernetes manifests in `installer/k8s/` without requiring `--target k8s`.
 
 ### Clean Up / Teardown
 
@@ -343,6 +343,7 @@ The `otel` stack automatically provisions:
 | `ved ps` | Show container statuses, health, and exposed port mappings |
 | `ved reset` | Stop containers and wipe volumes/networks |
 | `ved test` | Run smoke tests against active stack endpoints |
+| `ved verify` | Run full verification lifecycle (`reset` -> `up` -> `ps` -> `test`) |
 | `ved validate` | Validate specification against schema without compiling |
 | `ved build` | Build detected project modules via native build wrappers |
 | `ved sync` | Rescan workspace and refresh cached module state |

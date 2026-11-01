@@ -26,7 +26,13 @@ Published documentation: [https://velos-io.github.io/veddocs](https://velos-io.g
   - [Curated Stacks](#curated-stacks)
 - [CLI Reference](#cli-reference)
   - [Commands Overview](#commands-overview)
-- [Repository](#repository)
+- [Plugins & Extensions](#plugins--extensions)
+  - [Plugin Architecture](#plugin-architecture)
+  - [Plugin Management Commands](#plugin-management-commands)
+  - [Official First-Party Plugins](#official-first-party-plugins)
+    - [ved-kit: PKI & Cryptography (`ved pki`, `ved crypt`)](#1-ved-kit-pki--cryptography)
+    - [ved-mirror: Local Multi-Registry Cache (`ved mirror`)](#2-ved-mirror-local-multi-registry-cache)
+- [Repositories](#repositories)
 
 ---
 
@@ -331,37 +337,6 @@ The `otel` stack automatically provisions:
 
 ---
 
-## Plugins & Extensions
-
-Ved features an external subcommand plugin architecture. Any executable named `ved-<cmd>` in `~/.ved/plugins/bin` or on `$PATH` seamlessly extends Ved as `ved <cmd>`.
-
-### Official First-Party Plugins
-
-1. **`ved-kit`** (`ved pki`, `ved crypt`):
-   - **`ved pki`**: Inspect certificates, fix Java `PKIX path building failed` errors (`ved pki trust <domain:port> --cacerts`), generate local CAs, and mint leaf TLS certs.
-   - **`ved crypt`**: Authenticated AES-256-GCM file encryption (`enc`, `dec`) and chunked streaming split/merge (`split`, `merge`) with integrity manifests.
-2. **`ved-mirror`** (`ved mirror`):
-   - Local pull-through multi-registry caching server for `/maven/*`, `/gradle/*`, and `/npm/*`.
-
-### Plugin Management
-
-```bash
-# Install official plugins
-ved plugin install kit
-ved plugin install mirror
-
-# Install local binary during development
-ved plugin install kit --path ./target/release/ved-kit
-
-# List installed plugins
-ved plugin list
-
-# Remove a plugin
-ved plugin remove kit
-```
-
----
-
 ## CLI Reference
 
 ### Commands Overview
@@ -400,9 +375,137 @@ Options:
 
 ---
 
-## Repository
+## Plugins & Extensions
+
+Ved features an extensible subcommand plugin architecture. Any executable named `ved-<cmd>` located in `~/.ved/plugins/bin` or discoverable on `$PATH` seamlessly extends Ved as `ved <cmd>`.
+
+### Plugin Architecture
+
+When an external command like `ved pki` or `ved mirror` is dispatched:
+1. **Lookup Hierarchy**: Ved inspects `~/.ved/plugins/bin/ved-<cmd>` first. If absent, it queries `$PATH`.
+2. **Context Injection**: Ved transparently passes the active workspace context to plugin child processes via environment variables:
+   - `VED_WORKSPACE_ROOT`: Absolute path to the resolved workspace root.
+   - `VED_CONFIG_DIR`: Absolute path to configuration files (`--config-dir` or default).
+   - `VED_WORK_DIR`: Absolute path to the mutable runtime directory (`--work-dir` or `.ved`).
+   - `VED_OUTPUT_DIR`: Path to the unified artifact destination, if specified.
+3. **Transparent Execution**: Exit codes, standard input, standard output, and standard error streams are attached directly to your terminal.
+
+---
+
+### Plugin Management Commands
+
+The built-in `ved plugin` command provides lifecycle management for installed extensions:
+
+#### 1. Install Plugins (`ved plugin install`)
+
+Install first-party plugins from GitHub or link a local binary during development:
+
+```bash
+# Install official plugins via shorthand
+ved plugin install kit
+ved plugin install mirror
+
+# Link a local development binary into ~/.ved/plugins/bin
+ved plugin install kit --path ./target/release/ved-kit
+ved plugin install mirror --path ./target/release/ved-mirror
+ved plugin install custom-tool --path /usr/local/bin/my-binary
+```
+
+#### 2. List Installed Plugins (`ved plugin list`)
+
+Inspect all plugin binaries registered in `~/.ved/plugins/bin`:
+
+```bash
+ved plugin list
+```
+
+Output:
+```text
+Installed plugins in /Users/username/.ved/plugins/bin:
+  - ved crypt
+  - ved crypto
+  - ved mirror
+  - ved pki
+```
+
+#### 3. Remove Plugins (`ved plugin remove`)
+
+Uninstall a plugin and clean up its executable symlinks:
+
+```bash
+ved plugin remove kit
+ved plugin remove mirror
+```
+
+---
+
+### Official First-Party Plugins
+
+#### 1. `ved-kit`: PKI & Cryptography
+
+The `kit` plugin provides enterprise PKI management and authenticated local file encryption via two subcommands: `ved pki` and `ved crypt`.
+
+##### `ved pki` (Public Key Infrastructure)
+- **`ved pki trust <HOST:PORT> [--cacerts]`**: Probes an upstream endpoint over TLS, downloads its certificate chain, detects missing CA trust anchors, and optionally injects the root certificate directly into Java's system keystore (`$JAVA_HOME/lib/security/cacerts`) to permanently resolve Java `PKIX path building failed` errors.
+- **`ved pki ca [--cn <NAME>] [-o <DIR>]`**: Bootstraps an offline local Development Root CA certificate and private key in `.ved/certs/ca/`.
+- **`ved pki issue <NAME> [--san <DNS_OR_IP>]...`**: Issues an X.509 leaf certificate and key signed by the local Development CA, complete with Subject Alternative Names (SANs).
+
+```bash
+# Diagnose and fix Java PKIX handshake errors
+ved pki trust internal-nexus.corp:8443 --cacerts
+
+# Create a local development root CA
+ved pki ca --cn "My Project Root CA"
+
+# Mint a local TLS certificate for local ingress domains
+ved pki issue localhost --san localhost --san 127.0.0.1 --san api.local.dev
+```
+
+##### `ved crypt` (Local Cryptography)
+- **`ved crypt enc <FILE> [-k <KEY>] [-o <OUT>]`**: Encrypts arbitrary files using authenticated AES-256-GCM. If no key is supplied, securely generates and displays a random 256-bit hexadecimal key.
+- **`ved crypt dec <FILE> -k <KEY> [-o <OUT>]`**: Decrypts and verifies the ciphertext against authentication tags.
+- **`ved crypt split <FILE> [--chunk-size <BYTES>] [-o <DIR>]`**: Splits large datasets or container layers into chunk files, generating a cryptographic SHA-256 integrity manifest.
+- **`ved crypt merge <DIR> [-o <FILE>]`**: Verifies manifest chunk hashes and reassembles the original file.
+
+```bash
+# Encrypt environment configuration
+ved crypt enc app.env -o app.env.enc
+
+# Decrypt configuration
+ved crypt dec app.env.enc -k <KEY_HEX> -o app.env
+
+# Split a 1GB dataset into 50MB chunks for transfer
+ved crypt split dataset.tar --chunk-size 52428800 -o chunks/
+
+# Reassemble and verify integrity
+ved crypt merge chunks/ -o dataset.tar
+```
+
+#### 2. `ved-mirror`: Local Multi-Registry Cache
+
+`ved-mirror` runs a lightweight, high-performance pull-through caching server for package managers:
+- **Unified Endpoints**: Exposes `/maven/*`, `/gradle/*`, and `/npm/*` under a single HTTP server.
+- **Offline Reliability**: Caches downloaded artefacts to disk with atomic writes. When offline (`--offline`), packages continue serving from cache.
+- **Client Configuration Generation**: Generates ready-to-use snippets for `settings.xml`, `build.gradle.kts`, and `.npmrc`.
+
+```bash
+# Start cache server on default port 8081
+ved mirror serve --port 8081 --dir ~/.ved/mirror-cache
+
+# Run in strictly offline mode (no upstream calls)
+ved mirror serve --offline --dir ~/.ved/mirror-cache
+
+# Print configuration instructions for Maven, Gradle, and npm
+ved mirror client-config --port 8081
+```
+
+---
+
+## Repositories
 
 - Compiler & Orchestrator: [github.com/velos-io/ved](https://github.com/velos-io/ved)
+- PKI & Cryptography Plugin (`ved-kit`): [github.com/velos-io/ved-kit](https://github.com/velos-io/ved-kit)
+- Multi-Registry Mirror Plugin (`ved-mirror`): [github.com/velos-io/ved-mirror](https://github.com/velos-io/ved-mirror)
 - Documentation Source: [github.com/velos-io/veddocs](https://github.com/velos-io/veddocs)
 - Homebrew Tap: [github.com/velos-io/homebrew-tap](https://github.com/velos-io/homebrew-tap)
 - Stacks Catalog: [github.com/velos-io/stacks](https://github.com/velos-io/stacks)

@@ -648,7 +648,7 @@
       <div class="group-title">Command Line</div>
       <ul>
         <li><a href="#cli-reference">Command Reference</a></li>
-        <li><a href="#vew-wrapper">The vew Wrapper</a></li>
+        <li><a href="#plugins">Plugins &amp; Extensions</a></li>
       </ul>
 
       <div class="group-title">Ecosystem</div>
@@ -733,7 +733,7 @@ brew install velos-io/tap/ved</code></pre>
             <span>macOS Apple Silicon (ARM64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-darwin-arm64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.19/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
         <div class="code-box">
@@ -741,7 +741,7 @@ sudo mv ved /usr/local/bin/</code></pre>
             <span>Linux x86_64 (AMD64)</span>
             <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
           </div>
-          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-linux-amd64.tar.gz | tar -xz
+          <pre><code>curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.19/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/</code></pre>
         </div>
 
@@ -1688,6 +1688,92 @@ ved mirror serve --dir .ved/mirror</code></pre>
         </div>
       </section>
 
+      <!-- Plugins Section -->
+      <section id="plugins">
+        <h2>Plugins &amp; Extensions</h2>
+        <p>Ved features a modular external subcommand plugin architecture. Any executable named <code>ved-&lt;cmd&gt;</code> placed in <code>~/.ved/plugins/bin</code> or discoverable on <code>$PATH</code> seamlessly extends the CLI as <code>ved &lt;cmd&gt;</code>.</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <h4>Deterministic Resolution</h4>
+            <p>Ved inspects <code>~/.ved/plugins/bin/ved-&lt;cmd&gt;</code> first, falling back to <code>$PATH</code>. Plugins can be compiled in any language.</p>
+          </div>
+          <div class="card">
+            <h4>Workspace Context Injection</h4>
+            <p>Plugins automatically inherit <code>VED_WORKSPACE_ROOT</code>, <code>VED_CONFIG_DIR</code>, <code>VED_WORK_DIR</code>, and <code>VED_OUTPUT_DIR</code>.</p>
+          </div>
+          <div class="card">
+            <h4>Stream &amp; Exit Passthrough</h4>
+            <p>Interactive stdin, stdout, stderr, and process return codes are piped directly with zero terminal overhead.</p>
+          </div>
+        </div>
+
+        <h3>Plugin Management Lifecycle</h3>
+        <p>Use the built-in <code>ved plugin</code> command to install, list, and uninstall extensions:</p>
+        <div class="code-box">
+          <div class="code-header">
+            <span>Terminal</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code># 1. Install official first-party plugins by shorthand
+ved plugin install kit
+ved plugin install mirror
+
+# 2. Or link a local binary during development
+ved plugin install kit --path ./target/release/ved-kit
+
+# 3. List installed plugins and commands
+ved plugin list
+
+# 4. Remove a plugin and clean up symlinks
+ved plugin remove kit</code></pre>
+        </div>
+
+        <h3>Official First-Party Plugins</h3>
+
+        <div class="card-grid">
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/ved-kit">ved-kit</a></h4>
+            <p>Zero-dependency PKI certificate management and AES-256-GCM encryption.</p>
+            <ul>
+              <li><code>ved pki trust &lt;HOST:PORT&gt; --cacerts</code>: Fix Java PKIX errors</li>
+              <li><code>ved pki ca</code>: Bootstrap local development CA</li>
+              <li><code>ved pki issue &lt;NAME&gt; --san ...</code>: Issue leaf TLS certificates</li>
+              <li><code>ved crypt enc / dec</code>: Authenticated file encryption</li>
+              <li><code>ved crypt split / merge</code>: Chunked transfers with SHA-256 manifests</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/ved-mirror">ved-mirror</a></h4>
+            <p>Lightweight local pull-through caching server for package registries.</p>
+            <ul>
+              <li>Unified caching for <code>/maven/*</code>, <code>/gradle/*</code>, and <code>/npm/*</code></li>
+              <li>Atomic writes with file-based cache in <code>~/.ved/mirror-cache</code></li>
+              <li>Offline mode: <code>ved mirror serve --offline</code></li>
+              <li>Client config snippets: <code>ved mirror client-config</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header">
+            <span>Plugin Usage Examples</span>
+            <button class="btn-copy" onclick="copySnippet(this)">Copy</button>
+          </div>
+          <pre><code># Trust an enterprise Nexus/Artifactory server in Java keystores
+ved pki trust artifactory.internal.corp:8443 --cacerts
+
+# Mint local development TLS certs for development ingress
+ved pki issue localhost --san localhost --san 127.0.0.1 --san api.local.dev
+
+# Encrypt sensitive environment variables
+ved crypt enc app.env -o app.env.enc
+
+# Start the multi-registry pull-through cache server
+ved mirror serve --port 8081 --dir ~/.ved/mirror-cache</code></pre>
+        </div>
+      </section>
+
       <!-- Repositories Section -->
       <section id="repositories">
         <h2>Ecosystem Repositories</h2>
@@ -1695,6 +1781,14 @@ ved mirror serve --dir .ved/mirror</code></pre>
           <div class="card">
             <h4><a href="https://github.com/velos-io/ved">velos-io/ved</a></h4>
             <p>Main codebase containing the Rust compiler, Starlark runtime, and CLI binary.</p>
+          </div>
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/ved-kit">velos-io/ved-kit</a></h4>
+            <p>PKI and local cryptographic encryption plugin binary (<code>ved pki</code>, <code>ved crypt</code>).</p>
+          </div>
+          <div class="card">
+            <h4><a href="https://github.com/velos-io/ved-mirror">velos-io/ved-mirror</a></h4>
+            <p>Multi-registry pull-through caching server for Maven, Gradle, and npm (<code>ved mirror</code>).</p>
           </div>
           <div class="card">
             <h4><a href="https://github.com/velos-io/veddocs">velos-io/veddocs</a></h4>

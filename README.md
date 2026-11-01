@@ -59,7 +59,7 @@ Projects configured with Ved include the `vew` wrapper script. It automatically 
 Pin or update versions using `.ved/.ved-version`:
 
 ```bash
-echo "0.2.18" > .ved/.ved-version
+echo "0.2.19" > .ved/.ved-version
 ```
 
 ### 3. Pre-built Binaries
@@ -68,11 +68,11 @@ Download pre-compiled binaries from [GitHub Releases](https://github.com/velos-i
 
 ```bash
 # macOS ARM64 (Apple Silicon)
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-darwin-arm64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.19/ved-darwin-arm64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 
 # Linux AMD64
-curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.18/ved-linux-amd64.tar.gz | tar -xz
+curl -fsSL https://github.com/velos-io/homebrew-tap/releases/download/v0.2.19/ved-linux-amd64.tar.gz | tar -xz
 sudo mv ved /usr/local/bin/
 ```
 
@@ -331,6 +331,37 @@ The `otel` stack automatically provisions:
 
 ---
 
+## Plugins & Extensions
+
+Ved features an external subcommand plugin architecture. Any executable named `ved-<cmd>` in `~/.ved/plugins/bin` or on `$PATH` seamlessly extends Ved as `ved <cmd>`.
+
+### Official First-Party Plugins
+
+1. **`ved-kit`** (`ved pki`, `ved crypt`):
+   - **`ved pki`**: Inspect certificates, fix Java `PKIX path building failed` errors (`ved pki trust <domain:port> --cacerts`), generate local CAs, and mint leaf TLS certs.
+   - **`ved crypt`**: Authenticated AES-256-GCM file encryption (`enc`, `dec`) and chunked streaming split/merge (`split`, `merge`) with integrity manifests.
+2. **`ved-mirror`** (`ved mirror`):
+   - Local pull-through multi-registry caching server for `/maven/*`, `/gradle/*`, and `/npm/*`.
+
+### Plugin Management
+
+```bash
+# Install official plugins
+ved plugin install kit
+ved plugin install mirror
+
+# Install local binary during development
+ved plugin install kit --path ./target/release/ved-kit
+
+# List installed plugins
+ved plugin list
+
+# Remove a plugin
+ved plugin remove kit
+```
+
+---
+
 ## CLI Reference
 
 ### Commands Overview
@@ -344,6 +375,7 @@ The `otel` stack automatically provisions:
 | `ved reset` | Stop containers and wipe volumes/networks |
 | `ved test` | Run smoke tests against active stack endpoints |
 | `ved verify` | Run full verification lifecycle (`reset` -> `up` -> `ps` -> `test`) |
+| `ved plugin` | Manage external subcommand plugins (`install`, `list`, `remove`) |
 | `ved validate` | Validate specification against schema without compiling |
 | `ved build` | Build detected project modules via native build wrappers |
 | `ved sync` | Rescan workspace and refresh cached module state |

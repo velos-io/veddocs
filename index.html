@@ -606,7 +606,7 @@
       <a href="#" class="brand">
         <span class="brand-badge">VED</span>
         <span>Docs</span>
-        <span class="brand-tag">v0.2.18</span>
+        <span class="brand-tag">v0.2.19</span>
       </a>
       <div class="nav-links">
         <a href="#installation">Install</a>
@@ -1145,7 +1145,7 @@ Stack.add("otel")</code></pre>
         </div>
 
         <div class="cli-toolbar">
-          <p><strong>Available Subcommands</strong> (14)</p>
+          <p><strong>Available Subcommands</strong> (15)</p>
           <div class="cli-toolbar-actions">
             <button class="btn-toggle-all" onclick="toggleAllAccordions(true)">Expand All</button>
             <button class="btn-toggle-all" onclick="toggleAllAccordions(false)">Collapse All</button>
@@ -1617,6 +1617,48 @@ ved init --project</code></pre>
                 <div class="code-box">
                   <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
                   <pre><code>ved config init</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- plugin -->
+          <div class="accordion-item" id="cmd-plugin">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <span class="cmd-name">ved plugin</span>
+                <span class="cmd-summary">Manage external subcommand plugins (install, list, remove)</span>
+              </div>
+              <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">
+              <div class="cmd-details">
+                <p>Manages Ved plugins in <code>~/.ved/plugins/bin</code>. When any executable named <code>ved-&lt;name&gt;</code> is installed or exists on <code>$PATH</code>, it automatically becomes available as <code>ved &lt;name&gt;</code>.</p>
+                <h4>Available Actions</h4>
+                <ul>
+                  <li><code>ved plugin install &lt;NAME&gt; [--path &lt;BIN&gt;]</code>: Installs a plugin (e.g. <code>kit</code> or <code>mirror</code>).</li>
+                  <li><code>ved plugin list</code>: Lists all currently installed plugin executables.</li>
+                  <li><code>ved plugin remove &lt;NAME&gt;</code>: Uninstalls a plugin and removes its command symlinks.</li>
+                </ul>
+                <h4>Official First-Party Plugins</h4>
+                <ul>
+                  <li><strong>kit</strong>: Installs <code>ved-pki</code> (certificate management &amp; Java PKIX repair) and <code>ved-crypt</code> (AES-256-GCM encryption &amp; chunked split/merge).</li>
+                  <li><strong>mirror</strong>: Installs <code>ved-mirror</code> (pull-through multi-registry cache for Maven, Gradle, and npm).</li>
+                </ul>
+                <h4>Examples</h4>
+                <div class="code-box">
+                  <div class="code-header"><span>Terminal</span><button class="btn-copy" onclick="copySnippet(this)">Copy</button></div>
+                  <pre><code># Install official plugins
+ved plugin install kit
+ved plugin install mirror
+
+# List installed plugins
+ved plugin list
+
+# Run installed plugin subcommands
+ved pki trust internal.corp:443 --cacerts
+ved crypt enc app.env
+ved mirror serve --dir .ved/mirror</code></pre>
                 </div>
               </div>
             </div>
